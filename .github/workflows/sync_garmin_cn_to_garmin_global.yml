@@ -17,7 +17,7 @@ on:
           - sync_wellness_global_to_cn
   schedule:
     #  每6小时检查一次
-    - cron: "0 */6 * * *"
+    - cron: "17 */6 * * *"
   push:
     branches:
       - main
