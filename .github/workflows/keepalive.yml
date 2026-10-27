@@ -1,0 +1,26 @@
+name: Keepalive
+
+on:
+  schedule:
+    # 每 3 天一次，确保 fork 仓库的 schedule 不被判定为"无活动"而停用
+    - cron: "23 3 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 写入保活时间戳
+        run: |
+          mkdir -p .keepalive
+          date -u "+%Y-%m-%d %H:%M:%S UTC" > .keepalive/last_keepalive
+
+      - name: 提交保活记录
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: keepalive [skip ci]"
+          file_pattern: ".keepalive/*"
